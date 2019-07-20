@@ -5,7 +5,9 @@
 #include <cstdint>
 #include <memory>
 
-#define FW_NAME          "/tmp/fpga_firmware.bin"
+#define FW_BASENAME      "fpga_e_firmware.bin"
+#define FW_TMP_PATH      ("/tmp/" FW_BASENAME)
+#define FW_LINK_PATH     ("/lib/firmware/" FW_BASENAME)
 #define SYSFS_FPGA_PATH  "/sys/class/fpga_manager/fpga1"
 
 #define MAX_WAIT_RETRIES 5

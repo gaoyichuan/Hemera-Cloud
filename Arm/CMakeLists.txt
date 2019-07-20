@@ -40,7 +40,7 @@ set(CMAKE_CXX_FLAGS "-Og -g ${CMAKE_CXX_FLAGS}")
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.61.0 REQUIRED COMPONENTS system thread)
+find_package(Boost 1.61.0 REQUIRED COMPONENTS system thread filesystem)
 
 # pthread
 find_package(Threads)

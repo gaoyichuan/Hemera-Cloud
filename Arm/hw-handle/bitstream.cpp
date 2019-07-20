@@ -7,9 +7,11 @@
 #include <mutex>
 #include <string>
 #include <unistd.h>
+#include <boost/filesystem.hpp>
 
 using std::shared_ptr;
 using std::string;
+namespace fs = boost::filesystem;
 
 uint8_t after_download() {
     int retry = 0;
@@ -19,7 +21,7 @@ uint8_t after_download() {
     while(retry < MAX_WAIT_RETRIES) {
         retry++;
         std::fread(buf, sizeof(char), 24, state);
-        if(std::strcmp(buf, "operating") == 0) {
+        if(std::strcmp(buf, "operating\n") == 0) {
             return 1;
         } else {
             MSG_DBG("wait fpga status: %s, retry %d", buf, retry);
@@ -64,7 +66,7 @@ uint8_t bitstream_download(shared_ptr<const string> bit, const int bit_length) {
     std::FILE *fw;
     
     // write tmp bitstream file
-    fw = std::fopen(FW_NAME, "wb");
+    fw = std::fopen(FW_TMP_PATH, "wb");
     std::fwrite(bitstream, sizeof(char), len, fw);
 
     if(ferror(fw))
@@ -72,9 +74,14 @@ uint8_t bitstream_download(shared_ptr<const string> bit, const int bit_length) {
 
     std::fclose(fw);
 
+    // check if symbolic link to firmware file exists
+    if(fs::symlink_status(FW_LINK_PATH).type() != fs::symlink_file) {
+        symlink(FW_TMP_PATH, FW_LINK_PATH);
+    }
+
     // write path to sysfs, trigger reconfigure
     fw = std::fopen(SYSFS_FPGA_PATH "/firmware", "w");
-    std::fputs("../.." FW_NAME, fw);
+    std::fputs(FW_BASENAME, fw);
     std::fclose(fw);
 
     // MSG_DBG("transfer finished");

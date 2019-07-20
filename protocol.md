@@ -108,7 +108,7 @@ Arm 上的 socket.io 客户端通过 `on('BIT_STREAM', fn)` 接收消息，ArmSe
 
 不定期发送的事件：BIT_STREAM, SET_SWITCH, GET_STATUS
 
-* BIT_STREAM[返回 BIT_STREAM_RESULT] 烧录二进制文件，Thinpad 接收到该事件之后需将开关置零
+* BIT_STREAM[返回 BIT_STREAM_RESULT] 烧录二进制文件，板子接收到该事件之后需将开关置零
 
     数据：BitStreamStructure
 
