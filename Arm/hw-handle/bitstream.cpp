@@ -69,8 +69,11 @@ uint8_t bitstream_download(shared_ptr<const string> bit, const int bit_length) {
     fw = std::fopen(FW_TMP_PATH, "wb");
     std::fwrite(bitstream, sizeof(char), len, fw);
 
-    if(ferror(fw))
+    if(ferror(fw)) {
         MSG_ERR("Write bitstream file error");
+        std::fclose(fw);
+        return 0;
+    }
 
     std::fclose(fw);
 
