@@ -20,8 +20,9 @@
 using namespace std;
 using namespace sio;
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
+    bitstream_download_ctrl_fpga();
+
     sio::client h;
     setlinebuf(stdout);
     cout << "start client" << endl;
